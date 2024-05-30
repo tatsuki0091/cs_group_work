@@ -1,5 +1,10 @@
 # cs_group_work
 Group work matching app
+
+Backend
+Command:
+// Launch the local sercer in Docker
+python manage.py runserver 0.0.0.0:8000
 　
 Free template:
 https://template-party.com/template/tp_haken1/tp_haken1_i_orange/

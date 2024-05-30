@@ -8,6 +8,6 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     date = models.DateField(default=datetime.date.today)
-    organizer = ForeignKey(User, on_delete=CASCADE)
+    # organizer = ForeignKey(User, on_delete=CASCADE)
     created = models.DateField(default=datetime.date.today)
     updated = models.DateField(blank=True)

@@ -17,5 +17,5 @@ RUN yarn install
 COPY . .
 
 
-CMD ["yarn","install"]
-CMD ["yarn","dev:proxy"]
+# CMD ["yarn","install"]
+# CMD ["yarn","dev:proxy"]
