@@ -1,5 +1,41 @@
 # cs_group_work
 Group work matching app
+Build Environment
+Frontend:
+Executed command
+- Create Next.js app
+yarn create next-app --typescript
+
+-Add Tailwind
+```
+yarn add -D tailwindcss postcss autoprefixer postcss-nested
+yarn tailwindcss init -p
+```
+
+Edit
+
+```
+module.exports = {
+  mode: 'jit',
+  purge: {
+    content: [
+      './src/pages/**/*.{js,ts,jsx,tsx}',
+      './src/components/**/*.{js,ts,jsx,tsx}'
+    ],
+    options: {
+      // https://purgecss.com/safelisting.html#patterns
+      safelist: {
+        standard: [/^bg-/, /^text-/],
+      },
+    },
+  },
+  content: [],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
 
 Backend
 Command:
