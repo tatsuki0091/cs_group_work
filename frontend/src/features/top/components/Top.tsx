@@ -5,11 +5,8 @@ import Card from './card/Card';
 function Top() {
     return (
         <>
-
             <Head />
             <Card />
-
-
         </>
     )
 }
