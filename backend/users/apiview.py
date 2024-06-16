@@ -4,7 +4,7 @@ from rest_framework import status
 from .models import Book
 from .serializers import BookSerializer
 
-class BookList(APIView):
+class UserList(APIView):
     def get(self, request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)

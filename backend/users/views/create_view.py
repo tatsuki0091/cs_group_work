@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from users.models import User
-from .serializers.create_user_serializer import CreateUserSerializer
+from users.serializers.create_user_serializer import CreateUserSerializer
 from rest_framework.decorators import api_view
 # To return JSON
 from rest_framework.response import Response
@@ -20,7 +20,3 @@ class CreateUser(generics.CreateAPIView):
         else:
             # Response error message 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LoginView(generics.GenericAPIView):
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
