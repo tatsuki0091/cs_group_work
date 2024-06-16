@@ -33,19 +33,19 @@ const page = () => {
             setError([...checkErrors]);
             return;
         }
-
         try {
             const apiResponse = await useForm({
                 values: {
                     username: username,
                     email: email,
                     password: password,
+                    introduction: introduction,
                     created: new Date(),
                 },
-                url: "/user/create",
+                url: "/user/create/",
                 httpMethod: POST,
             });
-            if (apiResponse.status === 200) {
+            if (apiResponse.status === 201) {
                 resetUsername();
                 resetEmail();
                 resetPassword();
@@ -55,6 +55,7 @@ const page = () => {
                 setError([apiResponse.data.message]);
             }
         } catch (error) {
+            console.log(error)
             console.error(`Failed to reset your password: ${error}`);
             throw new Error(`Failed to reset your password: ${error}`);
         }
@@ -90,7 +91,7 @@ const page = () => {
                             label='Password'
                             value={password}
                             handleChange={handlePassword}
-                            type='text'
+                            type='password'
                             id='password' />
                     </div>
                     <div className="flex items-start flex-col justify-start">

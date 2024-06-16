@@ -17,6 +17,7 @@ export const useForm = async <T extends object>({
             return data;
         })
         .catch((err) => {
+            console.log(err)
             return err;
         });
 

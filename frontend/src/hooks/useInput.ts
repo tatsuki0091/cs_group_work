@@ -1,17 +1,22 @@
 import { useState, Dispatch, useCallback } from "react";
 
-type UseInputReturnType<T> = [
+// 共通のフックの戻り値の型を定義
+type UseInputReturnType<T, E extends HTMLInputElement | HTMLTextAreaElement> = [
     T,
     Dispatch<React.SetStateAction<T>>,
-    (event: React.ChangeEvent<HTMLInputElement>) => void,
+    (event: React.ChangeEvent<E>) => void,
     () => void
 ];
 
-export const useInput = <T>(initialValue: T): UseInputReturnType<T> => {
+// inputおよびtextareaの両方で使用できる汎用的なフックを定義
+export const useInput = <T, E extends HTMLInputElement | HTMLTextAreaElement>(
+    initialValue: T
+): UseInputReturnType<T, E> => {
     const [value, setValue] = useState(initialValue);
+
     const handleChange = useCallback(
-        <U extends T>(event: React.ChangeEvent<HTMLInputElement>) => {
-            setValue(event.target.value as U);
+        (event: React.ChangeEvent<E>) => {
+            setValue(event.target.value as unknown as T);
         },
         []
     );
