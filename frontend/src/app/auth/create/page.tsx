@@ -114,8 +114,6 @@ const page = () => {
                     <ErrorMessages errors={errors} />
                 </div>
             </div >
-
-
         </>
     )
 }

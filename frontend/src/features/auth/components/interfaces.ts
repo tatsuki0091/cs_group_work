@@ -32,3 +32,8 @@ export interface CreateUserValidationInterface {
     introduction: string;
 }
 
+export interface LoginUserValidationInterface {
+    email: string;
+    password: string;
+}
+

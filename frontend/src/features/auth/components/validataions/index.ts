@@ -1,6 +1,7 @@
 // import { required, isEmail, passwordLength } from "./index";
 import { REQUIRED, IS_EMAIL, PASSWORD_LENGTH_VALIDATION } from "../constants";
-import { CreateUserValidationInterface } from "../interfaces";
+import { CreateUserValidationInterface, LoginUserValidationInterface } from "../interfaces";
+
 
 import { PASSWORD_LENGTH } from "../constants";
 const required = <T>(inputInfo: T): boolean => {
@@ -26,6 +27,26 @@ const passwordLength = (passwordLength: number): boolean => {
     return false;
 };
 
+export const loginValidateForm = (
+    props: LoginUserValidationInterface
+): Array<string> => {
+    //
+    const errors: Array<string> = [];
+    // required
+    if (required(props.email)) {
+        errors.push("Email" + REQUIRED);
+    }
+    if (required(props.password)) {
+        errors.push("Password" + REQUIRED);
+    }
+
+    // password length
+    if (passwordLength(props.password.length)) {
+        errors.push("Password" + PASSWORD_LENGTH_VALIDATION);
+    }
+
+    return errors;
+};
 
 export const createValidateForm = (
     props: CreateUserValidationInterface
@@ -52,7 +73,7 @@ export const createValidateForm = (
     }
 
     // password length
-    if (passwordLength(props.email.length)) {
+    if (passwordLength(props.password.length)) {
         errors.push("Password" + PASSWORD_LENGTH_VALIDATION);
     }
 
