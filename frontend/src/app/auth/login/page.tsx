@@ -1,50 +1,95 @@
+
+'use client'
 import React from 'react'
+import Input from '../../components/elements/inputs/Input'
+import ErrorMessages from '../../components/elements/errors/ErrorMessages'
+import { useInput } from "../../../hooks/useInput";
+import { useForm } from "../../../hooks/useForm";
+import useValidation from "../../../hooks/useValidation";
+import { POST } from "../../../helpers/axios/constants";
+import Link from 'next/link'
+import { useRouter } from "next/navigation";
+import { loginValidateForm } from "../../../features/auth/components/validataions/index"
 
 const page = () => {
+    const [email, , handleEmail, resetEmail] = useInput<string, HTMLInputElement>("");
+    const [password, , handlePassword, resetPassword] = useInput<string, HTMLInputElement>("");
+    const [errors, setError, resetValidation] = useValidation([]);
+    const { push } = useRouter();
+    const sendLoginequest = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // Check validation
+        const checkErrors = loginValidateForm({
+            email: email,
+            password: password,
+        });
+        // If there is an error, stop submit
+        if (checkErrors.length > 0) {
+            setError([...checkErrors]);
+            return;
+        }
+        try {
+            const apiResponse = await useForm({
+                values: {
+                    email: email,
+                    password: password,
+                },
+                url: "/user/login/",
+                httpMethod: POST,
+            });
+            if (apiResponse.status === 200) {
+                resetEmail();
+                resetPassword();
+                resetValidation
+                const { access, refresh } = apiResponse.data;
+                localStorage.setItem('access_token', access);
+                localStorage.setItem('refresh_token', refresh);
+                console.log(localStorage)
+                push("/");
+            } else {
+                setError([apiResponse.data.message]);
+            }
+            console.log(apiResponse)
+        } catch (error) {
+            console.log(error)
+            console.error(`Failed to reset your password: ${error}`);
+            throw new Error(`Failed to reset your password: ${error}`);
+        }
+    }
+
     return (
         <>
-            <div className="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
-                <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">Welcome to My Company</h1>
-                <form action="#" className="w-full flex flex-col gap-4">
+            <div className="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center mt-24 mb-24">
+                <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">Login</h1>
+                <form action="#" className="w-full flex flex-col gap-4" onSubmit={sendLoginequest}>
                     <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="firstName" className="text-sm text-gray-700 dark:text-gray-200 mr-2">First Name:</label>
-                        <input type="text" id="firstName" name="firstName" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                        <Input
+                            placeHolder='tom1123'
+                            label='Email'
+                            value={email}
+                            handleChange={handleEmail}
+                            type='text'
+                            id='email' />
                     </div>
-
-                    <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="lastName" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Last Name:</label>
-                        <input type="text" id="lastName" name="lastName" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                    <div className="flex items-start flex-col justify-start mb-10">
+                        <Input
+                            placeHolder='xxxxxxxxxxx'
+                            label='Password'
+                            value={password}
+                            handleChange={handlePassword}
+                            type='password'
+                            id='password' />
                     </div>
-
-                    <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="username" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Username:</label>
-                        <input type="text" id="username" name="username" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-                    </div>
-
-                    <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="email" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Email:</label>
-                        <input type="email" id="email" name="email" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-                    </div>
-
-                    <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="password" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Password:</label>
-                        <input type="password" id="password" name="password" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-                    </div>
-
-                    <div className="flex items-start flex-col justify-start">
-                        <label htmlFor="confirmPassword" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Confirm Password:</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-                    </div>
-
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm">Register</button>
+                    <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm">Login</button>
                 </form>
 
                 <div className="mt-4 text-center">
-                    <span className="text-sm text-gray-500 dark:text-gray-300">Already have an account? </span>
-                    <a href="#" className="text-blue-500 hover:text-blue-600">Login</a>
+                    <span className="text-sm text-gray-500 dark:text-gray-300">Don't have an account? </span>
+                    <Link className="text-white" href="/auth/create">Sign Up</Link>
                 </div>
-
-
+                <div className="mt-4">
+                    <ErrorMessages errors={errors} />
+                </div>
             </div >
         </>
     )

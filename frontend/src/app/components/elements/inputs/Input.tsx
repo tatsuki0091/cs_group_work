@@ -6,7 +6,7 @@ const Input = ({ placeHolder, label, value, handleChange, type, id }: InputInter
     return (
         <>
             <label
-                className="mb-2 block font-bold text-gray-700"
+                className="mb-2 block font-bold text-white"
                 htmlFor="username"
             >
                 {label}

@@ -87,6 +87,26 @@ const page = () => {
 
                     <div className="flex items-start flex-col justify-start">
                         <Input
+                            placeHolder='tom1123'
+                            label='Username'
+                            value={username}
+                            handleChange={handleUsername}
+                            type='text'
+                            id='username' />
+                    </div>
+
+                    <div className="flex items-start flex-col justify-start">
+                        <Input
+                            placeHolder='tom1123'
+                            label='Username'
+                            value={username}
+                            handleChange={handleUsername}
+                            type='text'
+                            id='username' />
+                    </div>
+
+                    <div className="flex items-start flex-col justify-start">
+                        <Input
                             placeHolder='xxxxxxxxxxx'
                             label='Password'
                             value={password}
@@ -114,8 +134,6 @@ const page = () => {
                     <ErrorMessages errors={errors} />
                 </div>
             </div >
-
-
         </>
     )
 }

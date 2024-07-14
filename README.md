@@ -41,6 +41,13 @@ Backend
 Command:
 // Launch the local sercer in Docker
 python manage.py runserver 0.0.0.0:8000
+
+// Make a migration file
+python manage.py makemigrations apps_name
+// Execute migration 
+python manage.py migrate apps_name
+
+
 　
 Free template:
 https://template-party.com/template/tp_haken1/tp_haken1_i_orange/
