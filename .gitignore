@@ -2,6 +2,7 @@
 ./backend/__pycache__/
 ./backend/*.pyc
 __pycache__/
+./backend/*/__pycache__/
 
 #Frontend
 ./frontend/node_modules
