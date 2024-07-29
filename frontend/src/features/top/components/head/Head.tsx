@@ -7,7 +7,6 @@ const Head = ({ interval = 3000 }) => {
 
     const [isVisible, setIsVisible] = useState(false);
     useEffect(() => {
-        console.log('sdfsfsd')
         // Showing up after 0.5 seconds
         const timer = setTimeout(() => {
             setIsVisible(true);
