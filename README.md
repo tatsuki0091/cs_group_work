@@ -42,6 +42,9 @@ Command:
 // Launch the local sercer in Docker
 python manage.py runserver 0.0.0.0:8000
 
+// Create an application
+python manage.py startapp event
+
 // Make a migration file
 python manage.py makemigrations apps_name
 // Execute migration 
