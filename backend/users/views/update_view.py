@@ -3,8 +3,8 @@ from users.models import User
 from users.serializers.update_user_serializer import UpdateUserSerializer
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from users.validations import validate_username, validate_email, validate_password, validate_firstname
+from rest_framework.permissions import IsAuthenticated
+from users.validations import Validations
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
@@ -14,6 +14,8 @@ from django.core.exceptions import ValidationError
 class UserUpdate(generics.GenericAPIView):
     # Initialize selializer
     serializer_class = UpdateUserSerializer
+    # # Check authentication
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         # Get jwt info
@@ -40,16 +42,19 @@ class UserUpdate(generics.GenericAPIView):
             # Get token data
             token = auth_header.split(' ')[1]
             data = request.data
-            # Check password
-
             try:
+                # Create an instance of validations
+                validator = Validations(data)
                 # Check values
-                validate_email(data)
-                validate_username(data)
+                validator.validate_email()
+                validator.validate_username()
+                validator.validate_first_name()
+                validator.validate_last_name()
+                # Check password
                 if data['password'] == '':
                     del data['password']
                 else:
-                    validate_password(data)
+                    validator.validate_password(data)
                     data['password'] = make_password(data['password'])
 
                 # Take access token
