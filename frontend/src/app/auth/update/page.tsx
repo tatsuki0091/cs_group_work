@@ -8,43 +8,34 @@ import { useForm } from '../../../hooks/useForm';
 import { useRouter } from 'next/navigation';
 import useValidation from '../../../hooks/useValidation';
 import { GET, PATCH } from '../../../helpers/axios/constants';
-import Link from 'next/link';
 
 const page = () => {
-    const [username, setUsername, handleUsername, resetUsername] = useInput<
+    const [username, setUsername, handleUsername] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [email, setEmail, handleEmail, resetEmail] = useInput<
+    const [email, setEmail, handleEmail] = useInput<string, HTMLInputElement>(
+        '',
+    );
+    const [firstName, setFirstName, handleFirstName] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [firstName, setFirstName, handleFirstName, resetFirstName] = useInput<
+    const [lastName, setLastName, handleLastName] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [lastName, setLastName, handleLastName, resetLastName] = useInput<
+    const [password, , handlePassword, resetPassword] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [password, setPassword, handlePassword, resetPassword] = useInput<
+    const [introduction, setIntroduction, handleIntroduction, ,] = useInput<
         string,
-        HTMLInputElement
+        HTMLTextAreaElement
     >('');
-    const [
-        previousPassword,
-        setPreviousPassword,
-        handlePreviousPassword,
-        resetPreviousPassword,
-    ] = useInput<string, HTMLInputElement>('');
-    const [
-        introduction,
-        setIntroduction,
-        handleIntroduction,
-        resetIntroduction,
-    ] = useInput<string, HTMLTextAreaElement>('');
     const [errors, setError, resetValidation] = useValidation([]);
     const tokenValue = localStorage.getItem('access_token');
+    // const [message, setMessage, resetMessage] =useInput<string>('');
     const { push } = useRouter();
 
     // Fetch User info
@@ -62,7 +53,6 @@ const page = () => {
         if (apiResponse.status === 200) {
             setUsername(apiResponse.data.userInfo.username);
             setEmail(apiResponse.data.userInfo.email);
-            // setPassword(apiResponse.data.userInfo.password)
             setIntroduction(apiResponse.data.userInfo.introduction);
             setFirstName(apiResponse.data.userInfo.first_name);
             setLastName(apiResponse.data.userInfo.last_name);
@@ -81,10 +71,10 @@ const page = () => {
             values: {
                 username: username,
                 email: email,
-                password: password === '' ? previousPassword : password,
+                password: password,
                 introduction: introduction,
-                firstName: firstName,
-                lastName: lastName,
+                first_name: firstName,
+                last_name: lastName,
             },
             url: '/user/update/',
             httpMethod: PATCH,
@@ -95,10 +85,20 @@ const page = () => {
         });
         if (updateApiResponse.status === 200) {
             resetValidation();
+            resetPassword();
         } else {
-            setError(updateApiResponse.data);
+            setError((prevState) => {
+                const updatedErrors = [...prevState];
+                if (updateApiResponse.response.data.error) {
+                    for (const error of updateApiResponse.response.data.error) {
+                        updatedErrors.push(error);
+                    }
+                } else {
+                    updatedErrors.push(updateApiResponse.message);
+                }
+                return updatedErrors;
+            });
         }
-        console.log(updateApiResponse);
     };
 
     useEffect(() => {
