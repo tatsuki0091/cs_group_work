@@ -11,15 +11,12 @@ from rest_framework import status
 
 class CreateUser(generics.CreateAPIView):
     # Need serializer_class
-    print('vadsbgdrbrwtbrtb')
     serializer_class = CreateUserSerializer
-    print('create createcreatecreatecreate')
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             # Register the data
-            o
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -30,3 +27,8 @@ class CreateUser(generics.CreateAPIView):
 class LoginView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
+
+
+class FetchView(generics.GenericAPIView):
+    def get(self, request):
+        print('get')

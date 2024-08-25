@@ -1,22 +1,27 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Input from '../../components/elements/inputs/Input';
 import Textbox from '../../components/elements/textboxes/Textbox';
 import ErrorMessages from '../../components/elements/errors/ErrorMessages';
 import { useInput } from '../../../hooks/useInput';
 import { useForm } from '../../../hooks/useForm';
-import useValidation from '../../../hooks/useValidation';
-import { POST } from '../../../helpers/axios/constants';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { createValidateForm } from '../../../features/auth/components/validataions/index';
+import useValidation from '../../../hooks/useValidation';
+import { GET, PATCH } from '../../../helpers/axios/constants';
 
 const page = () => {
-    const [username, , handleUsername, resetUsername] = useInput<
+    const [username, setUsername, handleUsername] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [email, , handleEmail, resetEmail] = useInput<
+    const [email, setEmail, handleEmail] = useInput<string, HTMLInputElement>(
+        '',
+    );
+    const [firstName, setFirstName, handleFirstName] = useInput<
+        string,
+        HTMLInputElement
+    >('');
+    const [lastName, setLastName, handleLastName] = useInput<
         string,
         HTMLInputElement
     >('');
@@ -24,66 +29,91 @@ const page = () => {
         string,
         HTMLInputElement
     >('');
-    const [introduction, , handleIntroduction, resetIntroduction] = useInput<
+    const [introduction, setIntroduction, handleIntroduction, ,] = useInput<
         string,
         HTMLTextAreaElement
     >('');
     const [errors, setError, resetValidation] = useValidation([]);
+    const tokenValue = localStorage.getItem('access_token');
+    // const [message, setMessage, resetMessage] =useInput<string>('');
     const { push } = useRouter();
 
-    const sendCreateRequest = async (
+    // Fetch User info
+    const fetchUser = async () => {
+        console.log(tokenValue);
+        const apiResponse = await useForm({
+            values: {},
+            url: '/user/update/',
+            httpMethod: GET,
+            headers: {
+                Authorization: `Bearer ${tokenValue}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        if (apiResponse.status === 200) {
+            setUsername(apiResponse.data.userInfo.username);
+            setEmail(apiResponse.data.userInfo.email);
+            setIntroduction(apiResponse.data.userInfo.introduction);
+            setFirstName(apiResponse.data.userInfo.first_name);
+            setLastName(apiResponse.data.userInfo.last_name);
+        } else {
+            push('/');
+        }
+        console.log(apiResponse);
+    };
+
+    // Update User
+    const sendUpdateRequest = async (
         event: React.FormEvent<HTMLFormElement>,
     ) => {
         event.preventDefault();
-        // Check validation
-        const checkErrors = createValidateForm({
-            username: username,
-            email: email,
-            password: password,
-            introduction: introduction,
+        const updateApiResponse = await useForm({
+            values: {
+                username: username,
+                email: email,
+                password: password,
+                introduction: introduction,
+                first_name: firstName,
+                last_name: lastName,
+            },
+            url: '/user/update/',
+            httpMethod: PATCH,
+            headers: {
+                Authorization: `Bearer ${tokenValue}`,
+                'Content-Type': 'application/json',
+            },
         });
-        // If there is an error, stop submit
-        if (checkErrors.length > 0) {
-            setError([...checkErrors]);
-            return;
-        }
-        try {
-            const apiResponse = await useForm({
-                values: {
-                    username: username,
-                    email: email,
-                    password: password,
-                    introduction: introduction,
-                    created: new Date(),
-                },
-                url: '/user/create/',
-                httpMethod: POST,
+        if (updateApiResponse.status === 200) {
+            resetValidation();
+            resetPassword();
+        } else {
+            setError((prevState) => {
+                const updatedErrors = [...prevState];
+                if (updateApiResponse.response.data.error) {
+                    for (const error of updateApiResponse.response.data.error) {
+                        updatedErrors.push(error);
+                    }
+                } else {
+                    updatedErrors.push(updateApiResponse.message);
+                }
+                return updatedErrors;
             });
-            if (apiResponse.status === 201) {
-                resetUsername();
-                resetEmail();
-                resetPassword();
-                resetValidation();
-                resetIntroduction();
-                push('/');
-            } else {
-                setError([apiResponse.data.message]);
-            }
-        } catch (error) {
-            console.log(error);
-            console.error(`Failed to reset your password: ${error}`);
-            throw new Error(`Failed to reset your password: ${error}`);
         }
     };
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
         <>
             <div className="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center mt-24 mb-24">
                 <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">
-                    Welcome to My Company
+                    This is your profile
                 </h1>
                 <form
                     className="w-full flex flex-col gap-4"
-                    onSubmit={sendCreateRequest}
+                    onSubmit={sendUpdateRequest}
                 >
                     <div className="flex items-start flex-col justify-start">
                         <Input
@@ -109,23 +139,23 @@ const page = () => {
 
                     <div className="flex items-start flex-col justify-start">
                         <Input
-                            placeHolder="tom1123"
-                            label="Username"
-                            value={username}
-                            handleChange={handleUsername}
+                            placeHolder="Tom"
+                            label="First Name"
+                            value={firstName}
+                            handleChange={handleFirstName}
                             type="text"
-                            id="username"
+                            id="firstName"
                         />
                     </div>
 
                     <div className="flex items-start flex-col justify-start">
                         <Input
-                            placeHolder="tom1123"
-                            label="Username"
-                            value={username}
-                            handleChange={handleUsername}
+                            placeHolder="Smith"
+                            label="Last Name"
+                            value={lastName}
+                            handleChange={handleLastName}
                             type="text"
-                            id="username"
+                            id="lastName"
                         />
                     </div>
 
@@ -152,18 +182,9 @@ const page = () => {
                         type="submit"
                         className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm"
                     >
-                        Register
+                        Update
                     </button>
                 </form>
-
-                <div className="mt-4 text-center">
-                    <span className="text-sm text-gray-500 dark:text-gray-300">
-                        Already have an account?{' '}
-                    </span>
-                    <Link className="text-white" href="/auth/login">
-                        Login
-                    </Link>
-                </div>
                 <div className="mt-4">
                     <ErrorMessages errors={errors} />
                 </div>
