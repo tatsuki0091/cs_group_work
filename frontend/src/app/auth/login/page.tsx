@@ -9,6 +9,7 @@ import { POST } from '../../../helpers/axios/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { loginValidateForm } from '../../../features/auth/components/validataions/index';
+import { cookies } from 'next/headers';
 
 const page = () => {
     const [email, , handleEmail, resetEmail] = useInput<
@@ -21,6 +22,7 @@ const page = () => {
     >('');
     const [errors, setError, resetValidation] = useValidation([]);
     const { push } = useRouter();
+    const cookieStore = cookies();
     const sendLoginequest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Check validation
