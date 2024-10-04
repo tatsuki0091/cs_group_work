@@ -8,6 +8,5 @@ class SerializerUtilities():
         user = authenticate(
             email=clean_data['email'], password=clean_data['password'])
         if not user:
-            print('sdfsfasdfasddfasdfasdfasjkngdrkfngksaz')
             raise ValidationError('user not found')
         return user

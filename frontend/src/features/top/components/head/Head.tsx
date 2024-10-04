@@ -1,10 +1,8 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 
-
 const Head = ({ interval = 3000 }) => {
-
     const [isVisible, setIsVisible] = useState(false);
     useEffect(() => {
         // Showing up after 0.5 seconds
@@ -19,16 +17,19 @@ const Head = ({ interval = 3000 }) => {
             <div className={styles.slideshow}>
                 <div
                     className={`${styles.slide}`}
-                    style={{ backgroundImage: `url('/images/connection1.jpg')` }}
+                    style={{
+                        backgroundImage: `url('/images/connection1.jpg')`,
+                    }}
                 >
-                    <h2 className={`${styles.text} ${isVisible ? styles.visible : ''} text-white text-4xl`}>
+                    <h2
+                        className={`${styles.text} ${isVisible ? styles.visible : ''} text-white text-4xl`}
+                    >
                         Let's all move forward together
                     </h2>
-
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Head
+export default Head;
