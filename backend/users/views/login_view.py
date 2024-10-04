@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model, login, logout
 from users.validations import Validations
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 
 
 class LoginUser(generics.GenericAPIView):
@@ -26,10 +27,34 @@ class LoginUser(generics.GenericAPIView):
             if serializer.is_valid():
                 user = serializer.check_user(data)
                 refresh = RefreshToken.for_user(user)
-                return Response({
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                }, status=status.HTTP_200_OK)
+                response = Response(status=status.HTTP_200_OK)
+                # response = HttpResponse('Test')
+                response.set_cookie(
+                    key='access_token',
+                    value=str(refresh.access_token),
+                    httponly=True,
+                    max_age=60 * 60 * 24,
+                    # max_age=10800,
+                    # httponly=False,
+                    # secure=False,  # 開発中はFalseにしてテスト
+                    # samesite='None',  # またはNone
+                    # path='/'
+                )
+
+                response.set_cookie(
+                    key='refresh',
+                    value=str(refresh),
+                    httponly=True,
+                    max_age=60 * 60 * 24,
+                    # max_age=10800,
+                    # httponly=False,
+                    # secure=False,  # 開発中はFalseにしてテスト
+                    # samesite='None',  # またはNone
+                    # path='/'
+                )
+
+                response.data = data
+                return response
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except (ValidationError, Exception) as e:
