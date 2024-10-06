@@ -1,7 +1,50 @@
+'use client';
+import { useEffect } from 'react';
+import { useForm } from '../../../../hooks/useForm';
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
+    useEffect(() => {
+        const allCookies = document.cookie;
+        console.log('Cookies: ', allCookies);
+
+        // // 必要なCookieだけをパースする場合
+        // const myCookie = allCookies
+        //     .split('; ')
+        //     .find(row => row.startsWith('my_cookie='))
+        //     ?.split('=')[1];
+
+        // console.log('My Cookie: ', myCookie);
+    }, []);
+
+    console.log('sdfsfa');
+
+    const { push } = useRouter();
+    const logout = async (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ) => {
+        event.preventDefault();
+        try {
+            const apiResponse = await useForm({
+                values: {},
+                url: '/user/logout/',
+                httpMethod: 'post',
+            });
+            if (apiResponse.status === 200) {
+                push('/');
+            } else {
+                console.log('-------------------');
+                console.log(apiResponse);
+            }
+        } catch (error) {
+            console.log(error);
+            console.error(`Failed to reset your password: ${error}`);
+            throw new Error(`Failed to reset your password: ${error}`);
+        }
+    };
+
     return (
         <>
             <header>
@@ -21,12 +64,12 @@ const Header = () => {
                             </span>
                         </a>
                         <div className="flex items-center lg:order-2">
-                            <Link
+                            <button
                                 className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-                                href="/auth/logout"
+                                onClick={logout}
                             >
-                                logout
-                            </Link>
+                                Logout
+                            </button>
                             <Link
                                 className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
                                 href="/auth/create"
@@ -138,26 +181,6 @@ const Header = () => {
                         </div>
                     </div>
                 </nav>
-
-                {/* <div
-                    className="relative h-[350px] overflow-hidden bg-[url('https://tecdn.b-cdn.net/img/new/slides/041.webp')] bg-cover bg-[50%] bg-no-repeat">
-                    <div
-                        className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black/60 bg-fixed">
-                        <div className="flex h-full items-center justify-center">
-                            <div className="px-6 text-center text-white md:px-12">
-                                <h1 className="mb-6 text-5xl font-bold">Heading</h1>
-                                <h3 className="mb-8 text-3xl font-bold">Subeading</h3>
-                                <button
-                                    type="button"
-                                    className="inline-block rounded border-2 border-neutral-50 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:text-neutral-200 focus:outline-none focus:ring-0 active:border-neutral-300 active:text-neutral-200 dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
-                                    data-twe-ripple-init
-                                    data-twe-ripple-color="light">
-                                    Call to action
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
             </header>
         </>
     );

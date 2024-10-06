@@ -43,11 +43,11 @@ const page = () => {
                 url: '/user/login/',
                 httpMethod: POST,
             });
+            console.log(apiResponse);
             if (apiResponse.status === 200) {
                 resetEmail();
                 resetPassword();
                 resetValidation();
-                const response = apiResponse.data;
                 push('/dashboard');
             } else {
                 console.log('-------------------');

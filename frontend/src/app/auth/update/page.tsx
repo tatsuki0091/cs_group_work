@@ -34,7 +34,7 @@ const page = () => {
         HTMLTextAreaElement
     >('');
     const [errors, setError, resetValidation] = useValidation([]);
-    const tokenValue = localStorage.getItem('access_token');
+    // const tokenValue = localStorage.getItem('access_token');
     // const [message, setMessage, resetMessage] =useInput<string>('');
     const { push } = useRouter();
 
@@ -45,7 +45,7 @@ const page = () => {
             url: '/user/update/',
             httpMethod: GET,
             headers: {
-                Authorization: `Bearer ${tokenValue}`,
+                // Authorization: `Bearer ${tokenValue}`,
                 'Content-Type': 'application/json',
             },
         });

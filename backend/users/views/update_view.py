@@ -18,22 +18,24 @@ class UserUpdate(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Get jwt info
-        auth_header = request.headers.get('Authorization')
-        if auth_header and auth_header.startswith('Bearer '):
-            # Split Bearer part and content part
-            token = auth_header.split(' ')[1]
-            try:
-                access_token = AccessToken(token)
-                payload = access_token.payload
-                # Fetch user infoi
-                userInfo = User.objects.get(username=payload['username'])
-                userSerializer = UpdateUserSerializer(userInfo)
-                return Response({'userInfo': userSerializer.data}, status=200)
-            except TokenError as e:
-                return Response({'error': str(e)}, status=400)
-        else:
-            return Response({'error': 'Authorization header missing or invalid'}, status=400)
+        print(request.COOKIES)
+        return Response({'error': str('dwsdfsf')}, status=400)
+        # # Get jwt info
+        # auth_header = request.headers.get('Authorization')
+        # if auth_header and auth_header.startswith('Bearer '):
+        #     # Split Bearer part and content part
+        #     token = auth_header.split(' ')[1]
+        #     try:
+        #         access_token = AccessToken(token)
+        #         payload = access_token.payload
+        #         # Fetch user infoi
+        #         userInfo = User.objects.get(username=payload['username'])
+        #         userSerializer = UpdateUserSerializer(userInfo)
+        #         return Response({'userInfo': userSerializer.data}, status=200)
+        #     except TokenError as e:
+        #         return Response({'error': str(e)}, status=400)
+        # else:
+        #     return Response({'error': 'Authorization header missing or invalid'}, status=400)
 
     # Update a current user data
     def patch(self, request):
