@@ -21,6 +21,7 @@ const page = () => {
     >('');
     const [errors, setError, resetValidation] = useValidation([]);
     const { push } = useRouter();
+    // const cookieStore = cookies();
     const sendLoginequest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Check validation
@@ -46,9 +47,7 @@ const page = () => {
                 resetEmail();
                 resetPassword();
                 resetValidation();
-                const { access, refresh } = apiResponse.data;
-                localStorage.setItem('access_token', access);
-                localStorage.setItem('refresh_token', refresh);
+                const response = apiResponse.data;
                 push('/dashboard');
             } else {
                 console.log('-------------------');

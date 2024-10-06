@@ -40,7 +40,6 @@ const page = () => {
 
     // Fetch User info
     const fetchUser = async () => {
-        console.log(tokenValue);
         const apiResponse = await useForm({
             values: {},
             url: '/user/update/',

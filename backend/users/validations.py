@@ -9,7 +9,7 @@ class Validations:
         self.first_name = data.get('first_name', '').strip()
         self.username = data.get('username', '').strip()
         self.password = data.get('password', '').strip()
-        self.password = data.get('last_name', '').strip()
+        self.last_name = data.get('last_name', '').strip()
         self.introduction = data.get('introduction', '').strip()
 
     def required(self, column, key):
