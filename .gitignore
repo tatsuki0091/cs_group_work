@@ -1,6 +1,8 @@
 #Backend
 ./backend/__pycache__/
 ./backend/*.pyc
+__pycache__/
+./backend/*/__pycache__/
 
 #Frontend
 ./frontend/node_modules
@@ -18,3 +20,4 @@ logs/
 .vscode/
 .env
 .env.dev
+node_modules
