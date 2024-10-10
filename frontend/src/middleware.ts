@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+// import { store } from './store/store';
+import { useAppDispatch, useAppSelector } from '@/store/hooks/hooks';
+import { decrement, increment } from '@/store/slices/counterSlice';
 
 // Checking JWT
 function checkAuth(req: NextRequest) {
@@ -13,14 +16,15 @@ function checkAuth(req: NextRequest) {
 }
 
 export function middleware(req: NextRequest) {
+    // console.log('Current state:', store);
     const currentUrl = req.nextUrl;
 
     // 例: クエリパラメータ "source" がない場合に追加
     if (!currentUrl.searchParams.has('source')) {
         currentUrl.searchParams.append('source', 'middleware');
 
-        // ログで確認
-        console.log('更新されたURL:', currentUrl.toString());
+        // // ログで確認
+        // console.log('更新されたURL:', currentUrl.toString());
 
         // 新しいURLにリダイレクト
         return NextResponse.redirect(currentUrl);
