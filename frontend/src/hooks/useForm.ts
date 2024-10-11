@@ -1,25 +1,42 @@
-import { axiosMethods } from "../helpers/axios/axiosMap";
-
+import { axiosMethods } from '../helpers/axios/axiosMap';
 interface formProps<T> {
     values: T;
     url: string;
     httpMethod: string;
-    // onSubmit: (values: T) => void;
+    headers?: object;
 }
 
 export const useForm = async <T extends object>({
     values,
     url,
     httpMethod,
+    headers = {
+        'Content-Type': 'application/json',
+    },
 }: formProps<T>) => {
-    const response = await axiosMethods[httpMethod](url, values)
-        .then((data) => {
-            return data;
+    let response = null;
+    if (httpMethod === 'post' || httpMethod === 'patch') {
+        const response = await axiosMethods[httpMethod](url, values, {
+            headers,
         })
-        .catch((err) => {
-            console.log(err)
-            return err;
-        });
+            .then((data) => {
+                return data;
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+        return response;
+    } else if (httpMethod === 'get') {
+        response = await axiosMethods[httpMethod](url, { values, headers })
+            .then((data) => {
+                return data;
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+    }
 
     return response;
 };

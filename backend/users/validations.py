@@ -3,38 +3,45 @@ from django.contrib.auth import get_user_model
 UserModel = get_user_model()
 
 
-def custom_validation(data):
-    # email = data['email'].strip()
-    username = data['username'].strip()
-    password = data['password'].strip()
-    ##
-    if not email or UserModel.objects.filter(email=email).exists():
-        raise ValidationError('choose another email')
-    ##
-    if not password or len(password) < 8:
-        raise ValidationError('choose another password, min 8 characters')
-    ##
-    if not username:
-        raise ValidationError('choose another username')
-    return data
+class Validations:
+    def __init__(self, data):
+        self.email = data.get('email', '').strip()
+        self.first_name = data.get('first_name', '').strip()
+        self.username = data.get('username', '').strip()
+        self.password = data.get('password', '').strip()
+        self.last_name = data.get('last_name', '').strip()
+        self.introduction = data.get('introduction', '').strip()
 
+    def required(self, column, key):
+        if not column or column == '':
+            raise ValidationError(key + ' is required')
+        return True
 
-def validate_email(data):
-    email = data['email'].strip()
-    if not email:
-        raise ValidationError('an email is needed')
-    return True
+    def min_length(self, column, number):
+        if len(column) < number:
+            raise ValidationError('At least you need' +
+                                  str(number) + ' character for ' + column)
+        return True
 
+    def validate_email(self):
+        self.required(self.email, 'Email')
+        return True
 
-def validate_username(data):
-    username = data['username'].strip()
-    if not username:
-        raise ValidationError('choose another username')
-    return True
+    def validate_username(self):
+        self.required(self.username, 'Username')
+        return True
 
+    def validate_first_name(self):
+        self.required(self.first_name, 'First name')
+        self.min_length(self.username, 2)
+        return True
 
-def validate_password(data):
-    password = data['password'].strip()
-    if not password:
-        raise ValidationError('a password is needed')
-    return True
+    def validate_last_name(self):
+        self.required(self.first_name, 'Last name')
+        self.min_length(self.first_name, 2)
+        return True
+
+    def validate_password(self):
+        self.required(self.password, 'Passwod')
+        self.min_length(self.password, 8)
+        return True

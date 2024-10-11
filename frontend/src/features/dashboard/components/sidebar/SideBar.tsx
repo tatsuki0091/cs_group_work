@@ -23,7 +23,7 @@ const SideBar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link href="#" className="flex items-center hover:bg-blue-700 p-2 rounded">
+                        <Link href="auth/update" className="flex items-center hover:bg-blue-700 p-2 rounded">
                             <FaUser className="mr-2" />
                             Profile
                         </Link>

@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-pdn4^cxzo%1os#gt9$r&%kyfgw#d0^dst0xc(m03f@0&myf#&4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'http://localhost:3000', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'http://localhost:3000',
+                 'https://localhost:3000', 'localhost', 'http://127.0.0.1:8000']
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'django_extensions',
     'rest_framework_simplejwt',
     'events',
     'users'
@@ -64,7 +66,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+
 CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000',
     'http://localhost:3000'
 ]
 
@@ -73,6 +77,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # Use JWT Authentication 
     ),
 }
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_AGE = 11600
+SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -105,13 +114,15 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DATABASE_NAME"),
-        'USER': os.environ.get("DATABASE_USER"),
-        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
-        'HOST': os.environ.get("DATABASE_HOST"),
-        'PORT': os.environ.get("DATABASE_PORT"),
+        'NAME': 'cs_group',
+        'USER': 'yamatanitatsuo',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
+
+# INSTALLED_APPS += ['sslserver']
 
 
 # Password validation
@@ -170,8 +181,8 @@ AUTHENTICATION_BACKENDS = (
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
