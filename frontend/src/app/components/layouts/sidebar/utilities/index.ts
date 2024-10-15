@@ -1,4 +1,4 @@
-import { IconProps } from '../../../interface';
+import { IconProps } from '../../../../../features/dashboard/interface';
 import * as Icons from '../../../../../icons';
 export const Icon = ({ icon }: IconProps) => {
     const SvgIcon = Icons[icon];
