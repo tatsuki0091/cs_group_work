@@ -11,16 +11,14 @@ import styles from './styles.module.css';
 const SideBar = () => {
     return (
         <>
-            <div
-                className={`bg-blue-600 text-white flex flex-col ${styles.sideBar}`}
-            >
+            <div className={` text-white flex flex-col ${styles.sideBar}`}>
                 <div className="p-4">
                     <h2 className="text-xl font-semibold">Sidebar</h2>
                 </div>
                 <ul className="w-80 flex-1 p-4 space-y-2">
                     <li>
                         <Link
-                            href="#"
+                            href="/dashboard"
                             className="flex items-center hover:bg-blue-700 p-2 rounded"
                         >
                             <FaTachometerAlt className="mr-2" />
