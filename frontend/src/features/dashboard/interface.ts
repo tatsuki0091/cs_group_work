@@ -1,4 +1,3 @@
-
 export interface IconProps {
     [key: string]: string;
 }
@@ -8,7 +7,7 @@ export interface WidgeContents {
     content: string;
 }
 
-export interface MapPoint {
-    latitude: number;
-    longitude: number;
-}
+// export interface MapPoint {
+//     latitude: number;
+//     longitude: number;
+// }
