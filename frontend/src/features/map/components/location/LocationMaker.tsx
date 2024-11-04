@@ -1,5 +1,5 @@
 import { Marker, Popup, useMap } from 'react-leaflet';
-import { MapPoint } from '../../dashboard/interface';
+import { MapPoint } from '@/features/common/interfaces';
 import React, { useEffect } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
