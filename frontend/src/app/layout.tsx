@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-// import { Inter } from "next/font/google";
 import './globals.css';
 import Header from '../app/components/layouts/header/Header';
 import Footer from '../app/components/layouts/footer/Footer';
 import Providers from '../providers/Providers';
-// const inter = Inter({ subsets: ["latin"] });
+import { headers } from 'next/headers';
+import SideBar from '../app/components/layouts/sidebar/SideBar';
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -16,12 +16,23 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const header_url = headers().get('x-url') || '';
+    const baseURL: string | null = 'http://localhost:3000';
     return (
         <html lang="en">
             <body>
                 <Providers>
                     <Header />
-                    <main>{children}</main>
+                    {header_url === `${baseURL}/auth/login` ||
+                    header_url === `${baseURL}/auth/create` ||
+                    header_url === `${baseURL}` ? (
+                        <main>{children}</main>
+                    ) : (
+                        <div className="min-h-screen flex">
+                            <SideBar />
+                            <main>{children}</main>
+                        </div>
+                    )}
                     <Footer />
                 </Providers>
             </body>

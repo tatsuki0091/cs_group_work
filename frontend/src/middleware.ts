@@ -1,8 +1,4 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-// import { store } from './store/store';
-import { useAppDispatch, useAppSelector } from '@/store/hooks/hooks';
-import { decrement, increment } from '@/store/slices/counterSlice';
+import { NextResponse, NextRequest } from 'next/server';
 
 // Checking JWT
 function checkAuth(req: NextRequest) {
@@ -15,29 +11,31 @@ function checkAuth(req: NextRequest) {
     }
 }
 
-export function middleware(req: NextRequest) {
-    // console.log('Current state:', store);
-    const currentUrl = req.nextUrl;
-
-    // 例: クエリパラメータ "source" がない場合に追加
-    if (!currentUrl.searchParams.has('source')) {
-        currentUrl.searchParams.append('source', 'middleware');
-
-        // // ログで確認
-        // console.log('更新されたURL:', currentUrl.toString());
-
-        // 新しいURLにリダイレクト
-        return NextResponse.redirect(currentUrl);
+function avoidStatic(req: NextRequest) {
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set('x-url', req.url);
+    const url = req.nextUrl.clone();
+    console.log(url);
+    if (
+        url.pathname.startsWith('/_next') === false ||
+        url.pathname.startsWith('/images') === false
+    ) {
+        return NextResponse.next({
+            request: {
+                headers: requestHeaders,
+            },
+        });
     }
+}
 
-    return NextResponse.next(); // そのまま処理を続行
-    // const authResponse = checkAuth(req);
-    // if (authResponse) {
-    //     const currentUrl = req.nextUrl;
-    //     currentUrl.searchParams.append('isLoggedin', 'true');
-    //     return NextResponse.next();
+export function middleware(req: NextRequest) {
+    const url = req.nextUrl.clone();
+    // if (checkAuth(req)) {
+    //     return avoidStatic(req);
     // } else {
-    //     return NextResponse.redirect('/');
+    //     avoidStatic(req);
+    //     url.pathname = '/auth/login';
+    //     return NextResponse.redirect(url);
     // }
 }
 

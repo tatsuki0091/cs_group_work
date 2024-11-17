@@ -47,6 +47,9 @@ python manage.py runserver localhost:8000
 
 python manage.py runserver_plus 0.0.0.0:8000 --cert-file backend/certs/localhost+3.pem --key-file backend/certs/localhost+3-key.pem
 
+// Create an application
+python manage.py startapp event
+
 // Make a migration file
 python manage.py makemigrations apps_name
 // Execute migration

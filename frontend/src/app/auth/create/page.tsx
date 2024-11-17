@@ -79,7 +79,7 @@ const page = () => {
         <>
             <div className="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center mt-24 mb-24">
                 <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">
-                    Welcome to My Company
+                    Welcome
                 </h1>
                 <form
                     className="w-full flex flex-col gap-4"
