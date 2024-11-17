@@ -1,6 +1,11 @@
+import sys
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+
+# sys.path.insert(1, '/path/to/application/app/folder')
+from events import models as Event
+# from events.models import Event
 
 
 class UserManager(BaseUserManager):
@@ -32,6 +37,7 @@ class User(AbstractUser):
     profile_picture = models.ImageField(
         upload_to='profile_pictures/', null=True, blank=True)
     email = models.EmailField(unique=True)
+    # events = models.ManyToManyField(Event, related_name='organizer')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

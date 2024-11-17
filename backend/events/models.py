@@ -1,17 +1,20 @@
 from django.db import models
-import datetime
+from datetime import datetime
 from users.models import User
 
 # Create your models here.
 
 
 class Event(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    latitude = models.IntegerField()
-    longitude = models.IntegerField()
-    date = models.DateField(default=datetime.date.today)
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateField(default=datetime.date.today)
-    updated = models.DateField(blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=4)
+    longitude = models.DecimalField(max_digits=9, decimal_places=4)
+    date = models.DateTimeField(default=datetime.now)
+    participants = models.ManyToManyField(
+        User, related_name='participated_events')
+    organizer = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='organized_events')
+    created = models.DateTimeField(default=datetime.now)
+    updated = models.DateTimeField(default=datetime.now, blank=True)
