@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.core.exceptions import ValidationError
+from utills.user_utils import get_payload
 
 
 class UserUpdate(generics.GenericAPIView):
@@ -18,15 +19,10 @@ class UserUpdate(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Get jwt info
-        auth_header = request.headers.get('Authorization')
-        if auth_header and auth_header.startswith('Bearer '):
-            # Split Bearer part and content part
-            token = auth_header.split(' ')[1]
+        if 'access_token' in request.COOKIES:
             try:
-                access_token = AccessToken(token)
-                payload = access_token.payload
-                # Fetch user infoi
+                # Fetch and set user id
+                payload = get_payload(request.COOKIES.get('access_token'))
                 userInfo = User.objects.get(username=payload['username'])
                 userSerializer = UpdateUserSerializer(userInfo)
                 return Response({'userInfo': userSerializer.data}, status=200)
@@ -37,10 +33,8 @@ class UserUpdate(generics.GenericAPIView):
 
     # Update a current user data
     def patch(self, request):
-        auth_header = request.headers.get('Authorization')
-        if auth_header and auth_header.startswith('Bearer '):
+        if 'access_token' in request.COOKIES:
             # Get token data
-            token = auth_header.split(' ')[1]
             data = request.data
             try:
                 # Create an instance of validations
@@ -58,8 +52,7 @@ class UserUpdate(generics.GenericAPIView):
                     data['password'] = make_password(data['password'])
 
                 # Take access token
-                access_token = AccessToken(token)
-                payload = access_token.payload
+                payload = get_payload(request.COOKIES.get('access_token'))
 
                 # Fetch user info
                 userInfo = User.objects.get(username=payload['username'])
@@ -74,7 +67,7 @@ class UserUpdate(generics.GenericAPIView):
                     serializer.save()
                     return Response({'userInfo': serializer.data}, status=200)
                 else:
-                    return Response({'userInfo': serializer.data}, status=200)
+                    return Response({'userInfo': serializer.data}, status=400)
             except (ValidationError, TokenError, Exception) as e:
                 print(f"Caught an exception: {e}")
                 return Response({'error': e}, status=400)
