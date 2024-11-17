@@ -36,7 +36,7 @@ const SideBar = () => {
                     </li>
                     <li>
                         <Link
-                            href="auth/update"
+                            href="/auth/update"
                             className="flex items-center hover:bg-blue-700 p-2 rounded"
                         >
                             <FaUser className="mr-2" />

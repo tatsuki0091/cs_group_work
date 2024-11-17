@@ -34,7 +34,6 @@ const page = () => {
         HTMLTextAreaElement
     >('');
     const [errors, setError, resetValidation] = useValidation([]);
-    const tokenValue = localStorage.getItem('access_token');
     // const [message, setMessage, resetMessage] =useInput<string>('');
     const { push } = useRouter();
 
@@ -44,10 +43,6 @@ const page = () => {
             values: {},
             url: '/user/update/',
             httpMethod: GET,
-            headers: {
-                Authorization: `Bearer ${tokenValue}`,
-                'Content-Type': 'application/json',
-            },
         });
         if (apiResponse.status === 200) {
             setUsername(apiResponse.data.userInfo.username);
@@ -58,7 +53,6 @@ const page = () => {
         } else {
             push('/');
         }
-        console.log(apiResponse);
     };
 
     // Update User
@@ -78,7 +72,6 @@ const page = () => {
             url: '/user/update/',
             httpMethod: PATCH,
             headers: {
-                Authorization: `Bearer ${tokenValue}`,
                 'Content-Type': 'application/json',
             },
         });

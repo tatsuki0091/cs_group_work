@@ -9,6 +9,7 @@ from rest_framework import status
 from decimal import Decimal, ROUND_DOWN
 from datetime import datetime
 from rest_framework_simplejwt.tokens import AccessToken
+from utills.user_utils import get_payload
 
 
 class CreateEvent(generics.CreateAPIView):
@@ -38,9 +39,7 @@ class CreateEvent(generics.CreateAPIView):
         dataCopy['latitude'] = roundDownLatitude
 
         # Fetch and set user id
-        access_token = request.COOKIES.get('access_token')
-        access_token = AccessToken(access_token)
-        payload = access_token.payload
+        payload = get_payload(request.COOKIES.get('access_token'))
         userInfo = User.objects.get(username=payload['username'])
         dataCopy['organizer'] = userInfo.id
 
