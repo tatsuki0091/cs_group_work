@@ -1,8 +1,15 @@
-import React from 'react'
-import { InputInterface } from './interfaces'
+import React from 'react';
+import { InputInterface } from './interfaces';
 
-
-const Input = ({ placeHolder, label, value, handleChange, type, id }: InputInterface) => {
+const Input = ({
+    placeHolder,
+    label,
+    value,
+    handleChange,
+    handleBlur,
+    type,
+    id,
+}: InputInterface) => {
     return (
         <>
             <label
@@ -18,9 +25,10 @@ const Input = ({ placeHolder, label, value, handleChange, type, id }: InputInter
                 placeholder={placeHolder}
                 value={value}
                 onChange={handleChange}
+                onBlur={handleBlur}
             />
         </>
-    )
-}
+    );
+};
 
-export default Input
+export default Input;
