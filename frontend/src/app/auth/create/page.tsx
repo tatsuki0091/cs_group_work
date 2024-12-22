@@ -12,18 +12,14 @@ import { useRouter } from 'next/navigation';
 import { createValidateForm } from '../../../features/auth/components/validataions/index';
 
 const page = () => {
-    const [username, , handleUsername, resetUsername] = useInput<
+    const [username, , handleUsername, resetUsername, handleUsernameBlur] =
+        useInput<string, HTMLInputElement>('');
+    const [email, , handleEmail, resetEmail, handleEmailBlur] = useInput<
         string,
         HTMLInputElement
     >('');
-    const [email, , handleEmail, resetEmail] = useInput<
-        string,
-        HTMLInputElement
-    >('');
-    const [password, , handlePassword, resetPassword] = useInput<
-        string,
-        HTMLInputElement
-    >('');
+    const [password, , handlePassword, resetPassword, handlePasswordBlur] =
+        useInput<string, HTMLInputElement>('');
     const [introduction, , handleIntroduction, resetIntroduction] = useInput<
         string,
         HTMLTextAreaElement
@@ -91,17 +87,19 @@ const page = () => {
                             label="Username"
                             value={username}
                             handleChange={handleUsername}
+                            handleBlur={handleUsernameBlur}
                             type="text"
                             id="username"
                         />
                     </div>
 
-                    <div className="flex items-start flex-col justify-start">
+                    {/* <div className="flex items-start flex-col justify-start">
                         <Input
                             placeHolder="xxxxxx@xxx.com"
                             label="Email"
                             value={email}
                             handleChange={handleEmail}
+                            handleBlur={handleEmailBlur}
                             type="text"
                             id="email"
                         />
@@ -116,16 +114,17 @@ const page = () => {
                             type="text"
                             id="username"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="flex items-start flex-col justify-start">
                         <Input
-                            placeHolder="tom1123"
-                            label="Username"
-                            value={username}
-                            handleChange={handleUsername}
+                            placeHolder="xxx@xxx.com"
+                            label="Email"
+                            value={email}
+                            handleChange={handleEmail}
+                            handleBlur={handleEmailBlur}
                             type="text"
-                            id="username"
+                            id="email"
                         />
                     </div>
 
@@ -135,6 +134,7 @@ const page = () => {
                             label="Password"
                             value={password}
                             handleChange={handlePassword}
+                            handleBlur={handlePasswordBlur}
                             type="password"
                             id="password"
                         />

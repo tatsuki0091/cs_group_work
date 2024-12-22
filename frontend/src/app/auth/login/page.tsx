@@ -50,8 +50,6 @@ const page = () => {
                 const response = apiResponse.data;
                 push('/dashboard');
             } else {
-                console.log('-------------------');
-                console.log(apiResponse);
                 setError(apiResponse.response.data.error);
             }
         } catch (error) {

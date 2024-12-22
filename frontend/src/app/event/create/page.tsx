@@ -31,17 +31,23 @@ const LazyMapComponent = dynamic(
 );
 
 const page = () => {
-    const [name, , handleName, resetName] = useInput<string, HTMLInputElement>(
-        '',
-    );
+    const [name, , handleName, resetName, handleNameBlur] = useInput<
+        string,
+        HTMLInputElement
+    >('');
     const [location, setLocation] = useState<MapPoint>({
         latitude: LONDON_LOCATION.latitude,
         longitude: LONDON_LOCATION.longitude,
     });
 
-    const [address, setAddress] = useInput<string, HTMLInputElement>('');
+    const [address, setAddress, , resetAddress] = useInput<
+        string,
+        HTMLInputElement
+    >('');
 
-    const [date, setDate] = useInput<Date, HTMLInputElement>(new Date());
+    const [date, setDate, , resetDate] = useInput<Date, HTMLInputElement>(
+        new Date(),
+    );
 
     const handleDateChange: OnChangeFunction = (date) => {
         if (date) {
@@ -90,10 +96,10 @@ const page = () => {
             });
             if (apiResponse.status === 201) {
                 resetName();
-                // resetLatitude();
-                // resetLongitude();
+                resetAddress();
                 resetValidation();
                 resetDescription();
+                resetDate();
                 // push('/');
             } else {
                 setError([apiResponse.data.message]);
@@ -129,6 +135,7 @@ const page = () => {
                                 label="Name"
                                 value={name}
                                 handleChange={handleName}
+                                handleBlur={handleNameBlur}
                                 type="text"
                                 id="name"
                             />

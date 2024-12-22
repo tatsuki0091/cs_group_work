@@ -3,6 +3,7 @@ export interface InputInterface {
     label: string;
     value: string | number | readonly string[] | undefined;
     handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    handleBlur?: React.ChangeEventHandler<HTMLInputElement>;
     type: string;
     id: string;
 }

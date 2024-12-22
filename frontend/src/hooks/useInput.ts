@@ -6,6 +6,7 @@ type UseInputReturnType<T, E extends HTMLInputElement | HTMLTextAreaElement> = [
     Dispatch<React.SetStateAction<T>>,
     (event: React.ChangeEvent<E>) => void,
     () => void,
+    (event: React.ChangeEvent<E>) => void,
 ];
 
 // inputおよびtextareaの両方で使用できる汎用的なフックを定義
@@ -15,12 +16,20 @@ export const useInput = <T, E extends HTMLInputElement | HTMLTextAreaElement>(
     const [value, setValue] = useState(initialValue);
 
     const handleChange = useCallback((event: React.ChangeEvent<E>) => {
-        setValue(event.target.value as unknown as T);
+        let value = event.target.value;
+        setValue(value as unknown as T);
     }, []);
 
     const reset = () => {
         setValue(initialValue);
     };
 
-    return [value, setValue, handleChange, reset];
+    const handleBlur = (event: React.ChangeEvent<E>) => {
+        if (typeof event.target.value === 'string') {
+            let value = event.target.value.trim();
+            setValue(value as unknown as T);
+        }
+    };
+
+    return [value, setValue, handleChange, reset, handleBlur];
 };
