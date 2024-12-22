@@ -19,7 +19,7 @@ class CreateEvent(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         # Copy request data
         dataCopy = request.data.copy()
-
+        print(dataCopy)
         # Format the date
         date = dataCopy['date']
         dateFormat = datetime.strptime(

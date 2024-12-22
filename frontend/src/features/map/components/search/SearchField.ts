@@ -14,6 +14,7 @@ import { MapPoint } from '@/features/common/interfaces';
 
 interface ChildComponentProps {
     setLocation: React.Dispatch<React.SetStateAction<MapPoint>>;
+    setAddress?: React.Dispatch<React.SetStateAction<string>>;
     // latitude: number;
     // longitude: number;
 }
@@ -21,18 +22,15 @@ interface ChildComponentProps {
 const SearchField = (locationInfo: ChildComponentProps) => {
     const map = useMap();
     const provider = new OpenStreetMapProvider();
-    // const [location, setLocation] = useState<MapPoint>({
-    //     latitude: 0,
-    //     longitude: 0,
-    // });
-    // Add customer function for GeoSearchControl
-    // When you type enter to search the place this section is going to be executed
     map.on('geosearch/showlocation', async (result: unknown) => {
-        console.log('Search result:');
         if (typeof result === 'object') {
-            console.log('sdfdsfs');
-            console.log(locationInfo.setLocation);
-
+            console.log(result);
+            if (result.location.label && locationInfo.setAddress) {
+                console.log(result.location.label);
+                locationInfo.setAddress(
+                    (prev) => (prev = result.location.name),
+                );
+            }
             if (result.location && result.location.raw) {
                 locationInfo.setLocation((prev) => ({
                     ...prev,
@@ -45,7 +43,6 @@ const SearchField = (locationInfo: ChildComponentProps) => {
 
     useEffect(() => {
         // Set up the search bar
-
         const searchControl = new GeoSearchControl({
             provider: provider,
             style: 'bar', // Style to search

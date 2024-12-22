@@ -4,25 +4,17 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './styles.module.css';
 
-export interface DatePickerInterface {
-    label: string;
-    value: Date;
-    handleChange: (
-        date: Date | null,
-        event?:
-            | React.MouseEvent<HTMLElement, MouseEvent>
-            | React.KeyboardEvent<HTMLElement>
-            | undefined,
-    ) => void;
-}
+import { DatePickerInterface } from './interfaces';
 
-const DatePicker = ({ label, value, handleChange }: DatePickerInterface) => {
+const DatePicker = ({
+    label,
+    value,
+    handleChange,
+    labelClass,
+}: DatePickerInterface) => {
     return (
         <>
-            <label
-                className="mb-2 block font-bold text-white"
-                htmlFor="event_date"
-            >
+            <label className={`${labelClass}`} htmlFor="event_date">
                 {label}
             </label>
             <ReactDatePicker
