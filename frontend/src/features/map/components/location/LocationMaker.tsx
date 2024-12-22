@@ -15,7 +15,6 @@ const LocationMarker = ({
     eventInfo?: EventInfoProps;
 }) => {
     const map = useMap();
-    console.log(eventInfo);
     useEffect(() => {
         if (position.latitude !== 0 && position.longitude !== 0) {
             map.flyTo([position.latitude, position.longitude], map.getZoom());
