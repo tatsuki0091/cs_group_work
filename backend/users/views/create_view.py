@@ -12,6 +12,7 @@ class CreateUser(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
     def create(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             # Register the data
@@ -19,8 +20,12 @@ class CreateUser(generics.CreateAPIView):
                 self.perform_create(serializer)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except (DatabaseError, Exception) as e:
+                print('error')
+                print(e)
                 # TODO Write record log handling
                 return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         else:
+            print('ssssss')
+            print(serializer.errors)
             # Response error message
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

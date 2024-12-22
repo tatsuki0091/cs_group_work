@@ -14,7 +14,7 @@ import { useForm } from '../../hooks/useForm';
 import { useRouter } from 'next/navigation';
 import { useInput } from '../../hooks/useInput';
 import { GET } from '../../helpers/axios/constants';
-import DatePicker from '@/app/components/elements/datepickers/DatePicker';
+import DatePicker from '@/features/common/elements/datepickers/DatePicker';
 // Dynamic import for client-side rendering
 const LazyMapComponent = dynamic(
     () => import('../../features/map/components/map/Map'),

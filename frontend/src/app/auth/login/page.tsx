@@ -1,14 +1,14 @@
 'use client';
 import React from 'react';
-import Input from '../../components/elements/inputs/Input';
-import ErrorMessages from '../../components/elements/errors/ErrorMessages';
+import Input from '../../../features/common/elements/inputs/Input';
+import ErrorMessages from '../../../features/common/elements/errors/ErrorMessages';
 import { useInput } from '../../../hooks/useInput';
 import { useForm } from '../../../hooks/useForm';
 import useValidation from '../../../hooks/useValidation';
 import { POST } from '../../../helpers/axios/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { loginValidateForm } from '../../../features/auth/components/validataions/index';
+import { loginValidateForm } from '../../../features/auth/validataions/index';
 
 const page = () => {
     const [email, , handleEmail, resetEmail] = useInput<
