@@ -15,7 +15,11 @@ export const useInput = <T, E extends HTMLInputElement | HTMLTextAreaElement>(
     const [value, setValue] = useState(initialValue);
 
     const handleChange = useCallback((event: React.ChangeEvent<E>) => {
-        setValue(event.target.value as unknown as T);
+        let value = event.target.value;
+        if (typeof value === 'string') {
+            value = value.trim();
+        }
+        setValue(value as unknown as T);
     }, []);
 
     const reset = () => {
