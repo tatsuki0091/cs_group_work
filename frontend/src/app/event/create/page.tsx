@@ -10,6 +10,7 @@ import { POST } from '../../../helpers/axios/constants';
 import { LONDON_LOCATION } from '../../../features/dashboard/components/constants';
 import { useRouter } from 'next/navigation';
 import { getCurrentLocation } from '@/features/map/utilities/index';
+import { OnChangeFunction } from '@/features/common/types';
 import { MapPoint } from '@/features/common/interfaces';
 import DatePicker from '@/app/components/elements/datepickers/DatePicker';
 import { createValidateForm } from '../../../features/event/validations';
@@ -29,13 +30,6 @@ const LazyMapComponent = dynamic(
     },
 );
 
-type OnChangeFunction = (
-    date: Date | null,
-    event?:
-        | React.MouseEvent<HTMLElement, MouseEvent>
-        | React.KeyboardEvent<HTMLElement>,
-) => void;
-
 const page = () => {
     const [name, , handleName, resetName] = useInput<string, HTMLInputElement>(
         '',
@@ -45,7 +39,9 @@ const page = () => {
         longitude: LONDON_LOCATION.longitude,
     });
 
-    const [date, setDate] = useState(new Date());
+    const [address, setAddress] = useInput<string, HTMLInputElement>('');
+
+    const [date, setDate] = useInput<Date, HTMLInputElement>(new Date());
 
     const handleDateChange: OnChangeFunction = (date) => {
         if (date) {
@@ -63,12 +59,12 @@ const page = () => {
         event: React.FormEvent<HTMLFormElement>,
     ) => {
         const tokenValue = localStorage.getItem('access_token');
-        console.log(tokenValue);
         event.preventDefault();
         // Check validation
         const checkErrors = createValidateForm({
             name: name,
             date: date,
+            address: address,
             description: description,
             latitude: location.latitude,
             longitude: location.longitude,
@@ -82,6 +78,7 @@ const page = () => {
             const apiResponse = await useForm({
                 values: {
                     name: name,
+                    address: address,
                     description: description,
                     latitude: location.latitude,
                     longitude: location.longitude,
@@ -136,10 +133,12 @@ const page = () => {
                                 id="name"
                             />
                         </div>
+
                         <div className="flex items-start flex-col justify-start">
                             <DatePicker
                                 label={'Event Date'}
                                 value={date}
+                                labelClass={'mb-2 block font-bold text-white'}
                                 handleChange={handleDateChange}
                             />
                         </div>
@@ -157,6 +156,7 @@ const page = () => {
                             <LazyMapComponent
                                 location={location}
                                 setLocation={setLocation}
+                                setAddress={setAddress}
                             />
                         </Suspense>
 

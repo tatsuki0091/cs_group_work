@@ -12,6 +12,9 @@ export const createValidateForm = (props: EventProps): Array<string> => {
     if (required(props.date)) {
         errors.push('Event Date' + REQUIRED);
     }
+    if (required(props.address)) {
+        errors.push('Address' + REQUIRED);
+    }
     if (required(props.description)) {
         errors.push('Description' + REQUIRED);
     }
