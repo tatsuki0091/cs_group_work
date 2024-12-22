@@ -10,8 +10,9 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     time_zone = models.CharField(max_length=100, default='America/Los_Angeles')
-    latitude = models.DecimalField(max_digits=9, decimal_places=4)
-    longitude = models.DecimalField(max_digits=9, decimal_places=4)
+    address = models.CharField(max_length=100, default='')
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
     date = models.DateTimeField(default=datetime.now)
     participants = models.ManyToManyField(
         User, related_name='participated_events')
