@@ -59,7 +59,6 @@ const page = () => {
                 url: `/event/fetch/?dateFrom=${dateFrom.toISOString()}&dateTo=${dateTo.toISOString()}&timeZone=${userTimeZone}`,
                 httpMethod: GET,
             });
-            console.log(apiResponse);
             if (apiResponse.status === 200) {
                 setEventInfo(apiResponse.data.eventInfo);
             }

@@ -20,8 +20,6 @@ class CreateUser(generics.CreateAPIView):
                 self.perform_create(serializer)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             except (DatabaseError, Exception) as e:
-                print('error')
-                print(e)
                 # TODO Write record log handling
                 return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         else:

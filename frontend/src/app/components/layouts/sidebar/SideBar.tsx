@@ -1,14 +1,38 @@
 'use client';
 import React from 'react';
-import routes from '../../../../features/dashboard/routes/sidebar';
-import { Button } from '@windmill/react-ui';
+import axios from 'axios';
 import Link from 'next/link';
 import { Icon } from './utilities';
 import SidebarSubmenu from './SidebarSubmenu';
 import { FaTachometerAlt, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import styles from './styles.module.css';
+import { POST } from '../../../../helpers/axios/constants';
+import { useForm } from '../../../../hooks/useForm';
+import { useRouter } from 'next/navigation';
 
 const SideBar = () => {
+    const { push } = useRouter();
+    const logout: React.MouseEventHandler<HTMLAnchorElement> = async (
+        event,
+    ) => {
+        event.preventDefault();
+        try {
+            const apiResponse = await useForm({
+                values: {},
+                url: '/user/logout/',
+                httpMethod: POST,
+            });
+            if (apiResponse.status === 200) {
+                push('/');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        console.log('logout');
+        console.log(event);
+    };
+
     return (
         <>
             <div className={` text-white flex flex-col ${styles.sideBar}`}>
@@ -55,6 +79,7 @@ const SideBar = () => {
                     <li>
                         <Link
                             href="#"
+                            onClick={logout}
                             className="flex items-center hover:bg-blue-700 p-2 rounded"
                         >
                             <FaSignOutAlt className="mr-2" />
