@@ -8,15 +8,19 @@ import { useForm } from '../../../hooks/useForm';
 import useValidation from '../../../hooks/useValidation';
 import { POST } from '../../../helpers/axios/constants';
 import { LONDON_LOCATION } from '../../../features/dashboard/components/constants';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { getCurrentLocation } from '@/features/map/utilities/index';
 import { OnChangeFunction } from '@/features/common/types';
-import { MapPoint } from '@/features/common/interfaces';
+import { MapPoint } from '@/features/common/intefaces/interfaces';
 import DatePicker from '@/features/common/elements/datepickers/DatePicker';
 import { createValidateForm } from '../../../features/event/validations';
-// import SideBar from '../../components/layouts/sidebar/SideBar';
 import dynamic from 'next/dynamic';
-// Not import the component at the once
+import Modal from '@/features/common/elements/modals/Modal';
+import {
+    // setErrorMessages,
+    // closeModal,
+    openModal,
+} from '@/features/common/utilities/index';
 const LazyMapComponent = dynamic(
     () => import('../../../features/map/components/map/Map'),
     {
@@ -58,13 +62,15 @@ const page = () => {
         string,
         HTMLTextAreaElement
     >('');
+    const [isModalOpen, setIsModalOpen] = useInput<boolean, HTMLInputElement>(
+        false,
+    );
     const [errors, setError, resetValidation] = useValidation([]);
-    const { push } = useRouter();
+    // const { push } = useRouter();
 
     const sendCreateRequest = async (
         event: React.FormEvent<HTMLFormElement>,
     ) => {
-        const tokenValue = localStorage.getItem('access_token');
         event.preventDefault();
         // Check validation
         const checkErrors = createValidateForm({
@@ -72,8 +78,8 @@ const page = () => {
             date: date,
             address: address,
             description: description,
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: location.latitude.toString(),
+            longitude: location.longitude.toString(),
         });
         //If there is an error, stop submit
         if (checkErrors.length > 0) {
@@ -100,6 +106,7 @@ const page = () => {
                 resetValidation();
                 resetDescription();
                 resetDate();
+                openModal(setIsModalOpen);
                 // push('/');
             } else {
                 setError([apiResponse.data.message]);
@@ -179,6 +186,16 @@ const page = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                // onClose={() => closeModal(setIsModalOpen, push('/dashboard'))}
+                setIsModalOpen={setIsModalOpen}
+                path={'/dashboard'}
+            >
+                <h1 className="text-center text-xl font-bold">
+                    Event was created.
+                </h1>
+            </Modal>
         </>
     );
 };

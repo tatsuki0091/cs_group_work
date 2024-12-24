@@ -15,7 +15,6 @@ function avoidStatic(req: NextRequest) {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set('x-url', req.url);
     const url = req.nextUrl.clone();
-    console.log(url);
     if (
         url.pathname.startsWith('/_next') === false ||
         url.pathname.startsWith('/images') === false
