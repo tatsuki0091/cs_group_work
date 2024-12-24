@@ -24,7 +24,6 @@ const SearchField = (locationInfo: ChildComponentProps) => {
     const provider = new OpenStreetMapProvider();
     map.on('geosearch/showlocation', async (result: unknown) => {
         if (typeof result === 'object') {
-            console.log(result);
             if (result.location.label && locationInfo.setAddress) {
                 console.log(result.location.label);
                 locationInfo.setAddress(

@@ -6,9 +6,13 @@ import { useRouter } from 'next/navigation';
 import useValidation from '../../../hooks/useValidation';
 import { GET, PATCH } from '../../../helpers/axios/constants';
 import UserInput from '@/features/auth/components/UserInput';
-import { setErrorMessages } from '@/features/common/utilities/index';
+import { setErrorMessages, openModal } from '@/features/common/utilities/index';
+import Modal from '@/features/common/elements/modals/Modal';
 
 const page = () => {
+    const [isModalOpen, setIsModalOpen] = useInput<boolean, HTMLInputElement>(
+        false,
+    );
     const [username, setUsername, handleUsername] = useInput<
         string,
         HTMLInputElement
@@ -76,6 +80,7 @@ const page = () => {
         if (updateApiResponse.status === 200) {
             resetValidation();
             resetPassword();
+            openModal(setIsModalOpen);
         } else {
             setErrorMessages(updateApiResponse.response.data, setError);
         }
@@ -103,6 +108,12 @@ const page = () => {
                 sendRequest={sendUpdateRequest}
                 errors={errors}
             />
+            <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+                <h1 className="text-center text-xl font-bold">Updated</h1>
+            </Modal>
+            {/* <button onClick={() => openModal(setIsModalOpen)}>
+                Open Modal
+            </button> */}
         </>
     );
 };

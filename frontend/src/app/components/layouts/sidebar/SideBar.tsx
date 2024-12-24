@@ -28,9 +28,6 @@ const SideBar = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-
-        console.log('logout');
-        console.log(event);
     };
 
     return (
