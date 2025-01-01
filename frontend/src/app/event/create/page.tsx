@@ -13,6 +13,7 @@ import { getCurrentLocation } from '@/features/map/utilities/index';
 import { OnChangeFunction } from '@/features/common/types';
 import { MapPoint } from '@/features/common/intefaces/interfaces';
 import DatePicker from '@/features/common/elements/datepickers/DatePicker';
+import DateTimePicker from '@/features/common/elements/datetimepickers/DateTimePicker';
 import { createValidateForm } from '../../../features/event/validations';
 import dynamic from 'next/dynamic';
 import Modal from '@/features/common/elements/modals/Modal';
@@ -49,15 +50,20 @@ const page = () => {
         HTMLInputElement
     >('');
 
-    const [date, setDate, , resetDate] = useInput<Date, HTMLInputElement>(
-        new Date(),
-    );
+    const [
+        startEventTime,
+        setStartEventTime,
+        handleStartEventTime,
+        resetStartEventTime,
+    ] = useInput<Date, HTMLInputElement>(new Date());
 
-    const handleDateChange: OnChangeFunction = (date) => {
-        if (date) {
-            setDate(date);
-        }
-    };
+    const [
+        endEventTime,
+        setEndEventTime,
+        handleEndEventTime,
+        resetEventEventTime,
+    ] = useInput<Date, HTMLInputElement>(new Date());
+
     const [description, , handleDescription, resetDescription] = useInput<
         string,
         HTMLTextAreaElement
@@ -75,7 +81,8 @@ const page = () => {
         // Check validation
         const checkErrors = createValidateForm({
             name: name,
-            date: date,
+            event_start_date_time: startEventTime,
+            event_end_date_time: endEventTime,
             address: address,
             description: description,
             latitude: location.latitude.toString(),
@@ -94,7 +101,8 @@ const page = () => {
                     description: description,
                     latitude: location.latitude,
                     longitude: location.longitude,
-                    date: date,
+                    event_start_date_time: startEventTime,
+                    event_end_date_time: endEventTime,
                     created: new Date(),
                 },
                 url: '/event/create/',
@@ -105,7 +113,8 @@ const page = () => {
                 resetAddress();
                 resetValidation();
                 resetDescription();
-                resetDate();
+                resetStartEventTime();
+                resetEventEventTime();
                 openModal(setIsModalOpen);
                 // push('/');
             } else {
@@ -148,12 +157,33 @@ const page = () => {
                             />
                         </div>
 
-                        <div className="flex items-start flex-col justify-start">
+                        {/* <div className="flex items-start flex-col justify-start">
                             <DatePicker
                                 label={'Event Date'}
                                 value={date}
                                 labelClass={'mb-2 block font-bold text-white'}
                                 handleChange={handleDateChange}
+                            />
+                        </div> */}
+                        <div className="flex items-start flex-col justify-start">
+                            <DateTimePicker
+                                label={
+                                    'Event Start Date Time(Please Click Calendar Mark)'
+                                }
+                                value={startEventTime}
+                                labelClass={'mb-2 block font-bold text-white'}
+                                handleChange={handleStartEventTime}
+                            />
+                        </div>
+
+                        <div className="flex items-start flex-col justify-start">
+                            <DateTimePicker
+                                label={
+                                    'Event End Date Time(Please Click Calendar Mark)'
+                                }
+                                value={endEventTime}
+                                labelClass={'mb-2 block font-bold text-white'}
+                                handleChange={handleEndEventTime}
                             />
                         </div>
 

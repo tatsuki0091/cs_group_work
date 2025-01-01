@@ -21,9 +21,9 @@ class CreateEvent(generics.CreateAPIView):
         dataCopy = request.data.copy()
         print(dataCopy)
         # Format the date
-        date = dataCopy['date']
-        dateFormat = datetime.strptime(
-            date, "%Y-%m-%dT%H:%M:%S.%fZ")
+        # date = dataCopy['date']
+        # dateFormat = datetime.strptime(
+        #     date, "%Y-%m-%dT%H:%M:%S.%fZ")
 
         # Convert the longitude and latitude
         convertLongitude = Decimal(dataCopy['longitude'])
@@ -34,7 +34,7 @@ class CreateEvent(generics.CreateAPIView):
             Decimal('0.001'), rounding=ROUND_DOWN)
 
         # Set editted data
-        dataCopy['date'] = dateFormat
+        # dataCopy['date'] = dateFormat
         dataCopy['longitude'] = roundDownLongitude
         dataCopy['latitude'] = roundDownLatitude
 
