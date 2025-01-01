@@ -13,7 +13,8 @@ class Event(models.Model):
     address = models.CharField(max_length=300, default='')
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    date = models.DateTimeField(default=datetime.now)
+    event_start_date_time = models.DateTimeField(default=datetime.now)
+    event_end_date_time = models.DateTimeField(default=datetime.now)
     participants = models.ManyToManyField(
         User, related_name='participated_events')
     organizer = models.ForeignKey(

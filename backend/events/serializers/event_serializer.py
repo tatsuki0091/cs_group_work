@@ -7,4 +7,4 @@ class EventSerializer(TrimStringFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'name', 'address', 'description', 'latitude', 'longitude',
-                  'date', 'organizer', 'created', 'updated']
+                  'event_start_date_time', 'event_end_date_time', 'organizer', 'created', 'updated']

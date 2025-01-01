@@ -1,6 +1,7 @@
 export interface EventProps {
     name: string;
-    date: Date;
+    event_start_date_time: Date;
+    event_end_date_time: Date;
     address: string;
     description: string;
     latitude: string;
