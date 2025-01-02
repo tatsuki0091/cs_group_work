@@ -8,6 +8,7 @@ import { GET, PATCH } from '../../../helpers/axios/constants';
 import UserInput from '@/features/auth/components/UserInput';
 import { setErrorMessages, openModal } from '@/features/common/utilities/index';
 import Modal from '@/features/common/elements/modals/Modal';
+import Check from '@/features/common/elements/modals/Check';
 
 const page = () => {
     const [isModalOpen, setIsModalOpen] = useInput<boolean, HTMLInputElement>(
@@ -110,10 +111,8 @@ const page = () => {
             />
             <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
                 <h1 className="text-center text-xl font-bold">Updated</h1>
+                <Check />
             </Modal>
-            {/* <button onClick={() => openModal(setIsModalOpen)}>
-                Open Modal
-            </button> */}
         </>
     );
 };

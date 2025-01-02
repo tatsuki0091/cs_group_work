@@ -22,7 +22,7 @@ class FetchEvent(generics.GenericAPIView):
             place_date_from = parsed_date_from.astimezone(time_zone)
             place_date_to = parsed_date_to.astimezone(time_zone)
             eventInfo = Event.objects.filter(
-                date__gte=place_date_from, date__lte=place_date_to)
+                event_start_date_time__gte=place_date_from, event_start_date_time__lte=place_date_to)
             print(eventInfo)
             serializer = FetchEventSerializer(eventInfo, many=True)
             print(serializer)
