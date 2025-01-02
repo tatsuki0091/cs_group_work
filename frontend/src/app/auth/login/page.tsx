@@ -9,6 +9,7 @@ import { POST } from '../../../helpers/axios/constants';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { loginValidateForm } from '../../../features/auth/validataions/index';
+import { setErrorMessages, openModal } from '@/features/common/utilities/index';
 
 const page = () => {
     const [email, , handleEmail, resetEmail] = useInput<
@@ -24,6 +25,9 @@ const page = () => {
     // const cookieStore = cookies();
     const sendLoginequest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (errors.length > 0) {
+            setError((prev) => (prev = []));
+        }
         // Check validation
         const checkErrors = loginValidateForm({
             email: email,
@@ -47,10 +51,10 @@ const page = () => {
                 resetEmail();
                 resetPassword();
                 resetValidation();
-                const response = apiResponse.data;
                 push('/dashboard');
             } else {
-                setError(apiResponse.response.data.error);
+                setErrorMessages(apiResponse.response.data, setError);
+                // setError(apiResponse.response.data.error);
             }
         } catch (error) {
             console.log(error);
