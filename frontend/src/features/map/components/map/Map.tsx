@@ -2,7 +2,7 @@
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { MapPoint } from '@/features/common/interfaces';
+import { MapPoint } from '@/features/common/intefaces/interfaces';
 import { EventInfoProps } from '@/features/event/interfaces';
 import LocationMarker from '../location/LocationMaker';
 import SearchField from '../search/SearchField';

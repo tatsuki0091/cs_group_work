@@ -17,6 +17,7 @@ import DateTimePicker from '@/features/common/elements/datetimepickers/DateTimeP
 import { createValidateForm } from '../../../features/event/validations';
 import dynamic from 'next/dynamic';
 import Modal from '@/features/common/elements/modals/Modal';
+import Check from '@/features/common/elements/modals/Check';
 import {
     // setErrorMessages,
     // closeModal,
@@ -225,6 +226,7 @@ const page = () => {
                 <h1 className="text-center text-xl font-bold">
                     Event was created.
                 </h1>
+                <Check />
             </Modal>
         </>
     );

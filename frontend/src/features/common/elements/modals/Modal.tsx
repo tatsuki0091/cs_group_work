@@ -30,7 +30,7 @@ const Modal = <T,>({
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}
-                <svg
+                {/* <svg
                     className={styles.svgFrame}
                     version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Modal = <T,>({
                         strokeMiterlimit="10"
                         points="100.2,40.2 51.5,88.8 29.8,67.5 "
                     />
-                </svg>
+                </svg> */}
                 <button
                     className="w-full mt-12 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm"
                     onClick={() => closeModal(setIsModalOpen, path)}

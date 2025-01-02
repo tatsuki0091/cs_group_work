@@ -1,0 +1,17 @@
+.popupBody {
+    margin: 0.5rem;
+}
+
+/* .title {
+    margin: 0.5rem;
+}
+
+.time {
+    margin: 0.5rem;
+} */
+
+.join {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    background-color: rgb(99, 227, 99);
+}
