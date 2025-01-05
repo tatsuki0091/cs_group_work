@@ -55,7 +55,7 @@ const LocationMarker = ({
                         <div className="border-r border-b border-l border-gray-400 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r flex flex-col justify-between leading-normal">
                             {/* <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;w=500" className="w-full mb-3"> */}
                             <div className="p-4 pt-2">
-                                <div className="mb-8">
+                                <div className="mb-2">
                                     {/* <p className="text-sm text-gray-600 flex items-center">
                                         <svg
                                             className="fill-current text-gray-500 w-3 h-3 mr-2"
@@ -85,6 +85,12 @@ const LocationMarker = ({
                                     )}
                                     <p className="text-gray-700 text-sm">
                                         {eventInfo.description}
+                                    </p>
+                                    <p
+                                        className={`${styles.create} text-gray-700 text-sm`}
+                                    >
+                                        Created By{' '}
+                                        {eventInfo.organizer.username}
                                     </p>
                                 </div>
                                 {/* <div className="flex items-center">

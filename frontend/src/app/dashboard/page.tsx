@@ -59,6 +59,7 @@ const page = () => {
                 httpMethod: GET,
             });
             if (apiResponse.status === 200) {
+                console.log(apiResponse.data.eventInfo[0]);
                 setEventInfo(apiResponse.data.eventInfo);
             }
             // TODO Error handling
