@@ -16,7 +16,9 @@ export interface EventInfoProps {
     description: string;
     latitude: string;
     longitude: string;
-    organizer: string;
+    organizer: {
+        [key: string]: string | number;
+    };
     participants: Array<string>;
     time_zone: string;
     created: string | Date;

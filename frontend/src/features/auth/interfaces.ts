@@ -4,6 +4,11 @@
 //   url: string;
 // }
 
+export interface UserInfoInterdace {
+    email: string;
+    password: string;
+}
+
 export interface LoginInterface extends Object {
     email: string;
     password: string;

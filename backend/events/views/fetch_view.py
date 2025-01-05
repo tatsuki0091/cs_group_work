@@ -21,12 +21,19 @@ class FetchEvent(generics.GenericAPIView):
             time_zone = pytz.timezone(request.GET.get('timeZone'))
             place_date_from = parsed_date_from.astimezone(time_zone)
             place_date_to = parsed_date_to.astimezone(time_zone)
-            eventInfo = Event.objects.filter(
+            eventInfo = Event.objects.select_related('organizer').filter(
                 event_start_date_time__gte=place_date_from, event_start_date_time__lte=place_date_to)
-            print(eventInfo)
+            print('------------')
+            # print(ev)
+            # eventInfo = Event.objects.filter(
+            #     event_start_date_time__gte=place_date_from, event_start_date_time__lte=place_date_to)
+
+            print(f"{eventInfo[0].name} by {eventInfo[0].organizer.email}")
             serializer = FetchEventSerializer(eventInfo, many=True)
             print(serializer)
-            print(len(serializer.data))
+
             return Response({'eventInfo': serializer.data}, status=200)
         except Exception as e:
+            print('error error error error')
+            print(e)
             return Response({'error': str(e)}, status=400)
